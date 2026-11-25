@@ -14,6 +14,38 @@ public class Kafe02 {
 
         Menu(nama, isMember, jam);
 
+        int totalHarga = 0;
+        boolean pesanLagi = true;
+
+        while (pesanLagi) {
+            System.out.print("\nMasukkan nomor menu yang ingin anda pesan: ");
+            int pilihanMenu = sc.nextInt();
+
+            if (pilihanMenu < 1 || pilihanMenu > 6) {
+                System.out.println("Menu tidak tersedia");
+                continue;
+            }
+
+            System.out.print("Masukkan jumlah item yang ingin dipesan: ");
+            int banyakItem = sc.nextInt();
+
+            totalHarga += hitungTotaalHarga02(pilihanMenu, banyakItem);
+
+            System.out.print("Pesan menu lain? (y/n): ");
+            pesanLagi = sc.next().equalsIgnoreCase("y");
+        }
+
+        System.out.print("Masukkan kode promo (Ketik - jika tidaj ada): ");
+        String kodePromo = sc.next();
+
+        int diskon = hitungDiskon(totalHarga, kodePromo, isMember);
+        int totalBayar = totalHarga - diskon;
+
+        System.out.println("\n===== TOTAL JAJAN ANDA =====");
+        System.out.println("Total harga     : Rp" + totalHarga);
+        System.out.println("Besar diskon    : Rp" + diskon);
+        System.out.println("Total bayaar    : Rp" + totalBayar);
+
         sc.close();
     }
     
@@ -36,5 +68,33 @@ public class Kafe02 {
         System.out.println("6. Mie Goreng   = Rp 18,000");
         System.out.println("===========================");
         System.out.println("Silahkan pilih menu yang anda inginkan.");
+    }
+
+    public static int hitungTotaalHarga02 (int pilihanMenu, int banyakItem) {
+        int[] hargaItem = {15000, 20000, 12000, 10000, 18000};
+
+        int hargaTotal = hargaItem[pilihanMenu - 1] * banyakItem;
+        return hargaTotal;
+    }
+
+    public static int hitungDiskon (int total, String kodePromo, boolean isMember) {
+        int persenPromo = 0;
+
+        if (kodePromo.equalsIgnoreCase("DISKON50")) {
+            persenPromo = 0;
+        } else if (kodePromo.equalsIgnoreCase("DISKON30")) {
+            persenPromo = 30;
+        } else {
+            System.out.println("Kode promo invalid");
+        }
+
+        int diskonPromo = total * persenPromo / 100;
+
+        int diskonMember = 0;
+        if (isMember) {
+            diskonMember = total * 10 / 100;
+        }
+
+        return diskonPromo + diskonMember;
     }
 }
