@@ -9,7 +9,12 @@ public class BankSampah02 {
         System.out.print("Masukkan jumlah nasabah: ");
         int n = sc.nextInt();
 
-        double[] dataSetoran = inputSetoran(n);
+        if (n <= 0) {
+            System.out.println("Jumlah nasabah harus lebih dari 0.");
+            return;
+        }
+
+        double[] dataSetoran = inputSetoran(sc, n);
         tampilSetoran(dataSetoran);
 
         double total = totalSetoran(dataSetoran);
@@ -19,15 +24,14 @@ public class BankSampah02 {
         System.out.println("\n===== Saldo Setiap Nasabah (Harga: Rp3.000/kg) =====");
         for (int i = 0; i < dataSetoran.length; i++) {
             double saldo = hitungSaldo(dataSetoran[i], hargaPerKg);
-            System.out.println("Nasabah ke-" + (i + 1) + ": Rp" + (int) saldo);
+            System.out.printf("Nasabah ke-%d: Rp%.0f%n", i + 1, saldo);
         }
 
         int idxTerbanyak = nasabahTerbanyak(dataSetoran);
         System.out.println("\nNasabah dengan setoran terbesar adalah Nasabah ke-" + (idxTerbanyak + 1) + " dengan berat " + dataSetoran[idxTerbanyak] + " kg.");
     }
 
-    public static double[] inputSetoran(int n) {
-        Scanner sc = new Scanner(System.in);
+    public static double[] inputSetoran(Scanner sc, int n) {
         double[] setoran = new double[n];
         for (int i = 0; i < n; i++) {
             System.out.print("Masukkan berat setoran nasabah ke-" + (i + 1) + " (kg): ");
